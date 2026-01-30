@@ -6,6 +6,8 @@ nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
+ps = PorterStemmer()
+
 from nltk.corpus import stopwords
 tfidf = pickle.load(open('vectorizer.pkl','rb'))
 model = pickle.load(open('model.pkl','rb'))
@@ -13,7 +15,7 @@ model = pickle.load(open('model.pkl','rb'))
 def transform_text(text):
     text = text.lower()
     text = nltk.word_tokenize(text)
-
+""
     y = []
     for i in text:
         if i.isalnum():
