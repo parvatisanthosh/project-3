@@ -3,6 +3,9 @@ import pickle
 import string
 import nltk
 nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('punkt_tab')
+
 from nltk.corpus import stopwords
 tfidf = pickle.load(open('vectorizer.pkl','rb'))
 model = pickle.load(open('model.pkl','rb'))
