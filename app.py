@@ -2,20 +2,25 @@ import streamlit as st
 import pickle
 import string
 import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
+# Initialize stemmer
 ps = PorterStemmer()
 
-from nltk.corpus import stopwords
+# Load TF-IDF vectorizer and model
 tfidf = pickle.load(open('vectorizer.pkl','rb'))
 model = pickle.load(open('model.pkl','rb'))
 
 def transform_text(text):
     text = text.lower()
     text = nltk.word_tokenize(text)
-""
+
     y = []
     for i in text:
         if i.isalnum():
@@ -36,16 +41,22 @@ def transform_text(text):
              
     return " ".join(y)
 
+# Streamlit UI
 st.title("Email Spam Classifier")
 input_sms = st.text_input("Enter the email content:")
-#preprocessing
-transfrorm_sms = transform_text(input_sms)
-#vectorization
-vector_input  = tfidf.transform([transfrorm_sms])
-#prediction
-result = model.predict(vector_input)[0]
-#display
-if result == 1:
-    st.header("Spam")   
-else:
-    st.header("Not Spam")
+
+if input_sms:
+    # Preprocessing
+    transformed_sms = transform_text(input_sms)
+
+    # Vectorization
+    vector_input = tfidf.transform([transformed_sms])
+
+    # Prediction
+    result = model.predict(vector_input)[0]
+
+    # Display result
+    if result == 1:
+        st.header("Spam")
+    else:
+        st.header("Not Spam")
